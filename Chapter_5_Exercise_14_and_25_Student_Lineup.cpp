@@ -10,14 +10,17 @@ Requirements:
 */
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
 //Function Prototypes
 void User_Inputs_Student_Names(string & first, string & last, int & Number_of_Students);
 void Display_First_Last(string & first, string & last, int & Number_of_Students);
+bool GetRepeatInfo();
 
 int main()
 {
@@ -26,32 +29,45 @@ int main()
     string last;
 
     int Number_of_Students = 0;
-    
 
-    User_Inputs_Student_Names(first, last, Number_of_Students);
+    bool User_Repeat;
+   
+    do {
+        User_Inputs_Student_Names(first, last, Number_of_Students);
 
-    Display_First_Last(first, last, Number_of_Students);
-     
-    return 0;
+        Display_First_Last(first, last, Number_of_Students);
 
+        User_Repeat = GetRepeatInfo();
+    }
+    while (User_Repeat); {
+        cout << "Thank you for using the program";
+        return 0;
+    }
 }
 
+
+//Function allows user to enter names and the number of students as well as evaluates the names to determine which are the first and last in line.
 void User_Inputs_Student_Names(string & first, string & last, int & Number_of_Students){
     string Student;
 
-    cout << "How many students are in line: ";
+    cout << setw(50) << right << "" << "Line Sorter V1\n";
+    
+    cout << setw(39) << right << "" << "How many students are in line: ";
     cin >> Number_of_Students;
     
-    while (Number_of_Students < 0 || Number_of_Students > 25) {
-        cout << "Please enter a number between 0 and 25.\n";
-        cout << "How many students are in line: ";
+    while (Number_of_Students <= 1 || Number_of_Students > 25) {
+        cout << setw(35) << right << "" << "Please enter a number from 2 to 25.\n";
+        cout << setw(35) << right << "" << "How many students are in line: ";
         cin >> Number_of_Students;
     }
     
     cin.ignore();
+
+    cout << setw(40) << right << "" << "Enter the names of the students\n";
+    cout << setw(40) << right << "" << "*******************************\n\n";
     
     for (int i = 1; i <= Number_of_Students; i++) {
-        cout << "Name of student " << i << ": ";
+        cout << setw(48) << right << "" << "Student " << i << ": ";
         getline(cin, Student);
 
 
@@ -68,14 +84,23 @@ void User_Inputs_Student_Names(string & first, string & last, int & Number_of_St
             }
         }
     }
-
-
-
 }
 
+
+//Displays the first and last in line.
 void Display_First_Last(string & first, string & last, int & Number_of_Students){
-    cout << "The students are ordered in alphabetical order.\n";
-    cout << "There are " << Number_of_Students << " students in this line!\n";
-    cout << "The first in line is " << first << endl;
-    cout << "Last in line is  " << last;
+    cout << endl;
+    cout<< setw(33) << right << "" << "***********************************************\n";
+    cout << setw(33) << right << "" << "The students are ordered in alphabetical order.\n";
+    cout << setw(44) << right << "" << "There are " << Number_of_Students << " students.\n";
+    cout << setw(45) << right << "" << "First in line: " << first << endl;
+    cout << setw(45) << right << "" << "Last in line:  " << last << endl;
+}
+
+//Allows user to choose whether they want to repeat program or end it
+bool GetRepeatInfo() {
+    char choice;
+    cout << setw(37) << right << "" << "Would you like to repeat Y/N: ";
+    cin >> choice;
+    return (choice == 'Y' || choice == 'y');
 }
