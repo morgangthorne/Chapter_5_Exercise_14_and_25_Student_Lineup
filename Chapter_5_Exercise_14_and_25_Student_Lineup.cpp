@@ -12,70 +12,122 @@ Requirements:
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
 //Function Prototypes
-void User_Inputs_Student_Names(string & first, string & last, int & Number_of_Students);
-void Display_First_Last(string & first, string & last, int & Number_of_Students);
+void Display_Welcome();
+int Open_File_Display();
+bool GetRepeatInfo();
+int Sort_File_Names();
+
+
 
 int main()
 {
+    bool User_Repeat;
+
+    do {
+        Display_Welcome();
+
+        Open_File_Display();
+
+        Sort_File_Names();
+        
+        User_Repeat = GetRepeatInfo();
+
+    }
+
+    while (User_Repeat); {
+        cout << "Thank you for using the program";
+        return 0;
+    }
+
+}
+
+//Displays Welcome Message and Explains Programs Purpose
+void Display_Welcome() {
+    cout << "There are 8 students in line\n";
+    cout << "****************************\n";
+    cout << endl;
+}
+
+//Displays all the names in the txt file
+int Open_File_Display() {
+    
+    string Student;
+
+    ifstream inputFile;
+
+    inputFile.open("LineUp (1).txt");
+
+    if (!inputFile) {
+        cout << "Unable to open file.\n";
+        return 1;
+    }
+
+    while (getline(inputFile, Student)) {
+        cout << "\t" << Student << endl;
+    }
+    
+    cout << endl;
+    cout << "****************************\n\n";
+
+    inputFile.close();
+
+    return 0;
+}
+
+//Sorts through names in file and displays who would be first and last in line.
+int Sort_File_Names() {
     string Student;
     string first;
     string last;
 
-    int Number_of_Students = 0;
-    
+    ifstream inputFile;
 
-    User_Inputs_Student_Names(first, last, Number_of_Students);
 
-    Display_First_Last(first, last, Number_of_Students);
-     
-    return 0;
+    inputFile.open("LineUp (1).txt");
 
-}
-
-void User_Inputs_Student_Names(string & first, string & last, int & Number_of_Students){
-    string Student;
-
-    cout << "How many students are in line: ";
-    cin >> Number_of_Students;
-    
-    while (Number_of_Students < 0 || Number_of_Students > 25) {
-        cout << "Please enter a number between 0 and 25.\n";
-        cout << "How many students are in line: ";
-        cin >> Number_of_Students;
+    if (!inputFile) {
+        cout << "Unable to open file.\n";
+        return 1;
     }
-    
-    cin.ignore();
-    
-    for (int i = 1; i <= Number_of_Students; i++) {
-        cout << "Name of student " << i << ": ";
-        getline(cin, Student);
 
+    cout << "Their place in line is ordered" << endl;
+    cout << "alphabetically\n";
+    cout << "\n****************************\n\n";
 
-        if (i == 1) {
+    if (getline(inputFile, Student)) {
+        first = Student;
+        last = Student;
+    }
+
+    while (getline(inputFile, Student)) {
+        if (first > Student) {
             first = Student;
+        }
+        if (last < Student) {
             last = Student;
         }
-        else {
-            if (Student < first) {
-                first = Student;
-            }
-            if (Student > last) {
-                last = Student;
-            }
-        }
     }
+    
+    cout << "   First is: " << first << endl;
+    cout << "   Last is: " << last << endl;
+    cout << "\n****************************\n\n";
+    
+    
 
+    inputFile.close();
 
-
+    return 0;
 }
 
-void Display_First_Last(string & first, string & last, int & Number_of_Students){
-    cout << "The students are ordered in alphabetical order.\n";
-    cout << "There are " << Number_of_Students << " students in this line!\n";
-    cout << "The first in line is " << first << endl;
-    cout << "Last in line is  " << last;
+//Allows user to choose whether they want to repeat program or end it
+bool GetRepeatInfo() {
+    char choice;
+    cout << "" << "Would you like to repeat Y/N: ";
+    cin >> choice;
+    return (choice == 'Y' || choice == 'y');
 }

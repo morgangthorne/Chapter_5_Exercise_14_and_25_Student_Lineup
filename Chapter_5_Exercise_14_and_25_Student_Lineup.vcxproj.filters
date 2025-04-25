@@ -18,5 +18,8 @@
     <ClCompile Include="Chapter_5_Exercise_14_and_25_Student_Lineup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
